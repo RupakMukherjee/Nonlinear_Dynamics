@@ -7,10 +7,13 @@ PROGRAM SIR
 ! \frac{dI}{dt} = R_0*S*I - I
 ! \frac{dR}{dt} = I
 ! \end{equnarray}
-! where, $R_0 = f(I) = N_0 + \frac{\epsa*I^{1+\alpha}}{1+\epsa * \delta * I^{1+\alpha}}$ and 'S' denotes 'Suspected', 'I' denotes 'Infected' and 'R' denotes 'Recovered' species.
+! where, $R_0 = f(I) = N_0 + \frac{\epsa*I^{1+\alpha}}{1+\epsa * \delta * I^{1+\alpha}}$ and 'S' denotes 'Suspected', 'I' denotes 'Infected' and 'R' denotes 'Recovered' fraction of a population.
+! Reference: 
+! a. Equation 3 of http://dx.doi.org/10.1155/2014/12062
+! b. Equation 4.7 of Mathematical Biology, Lecture notes for MATH 4333, Jeffrey R. Chasnov, Hong Kong University of Science and Technology.
 ! To run the code: gfortran <program>.f95; ./a.out
 ! To Plot: gnuplot
-  ! p "Time_Evolution.dat" u 1:2 w lp, "Time_Evolution.dat" u 1:3 w lp, "Time_Evolution.dat" u 1:4 w lp, "Time_Evolution.dat" u 1:($2+$3+$4) w lp 
+! p "Time_Evolution.dat" u 1:2 w lp, "Time_Evolution.dat" u 1:3 w lp, "Time_Evolution.dat" u 1:4 w lp, "Time_Evolution.dat" u 1:($2+$3+$4) w lp 
 !
 ! 
 implicit none
