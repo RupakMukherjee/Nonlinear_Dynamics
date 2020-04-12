@@ -31,7 +31,7 @@ xst = 0.0d0
 xmax = 50.0d0
 h = 0.0010d0
 
-DO x=xst,xmax,h
+do x=xst,xmax,h
   
   call derivative(x,y,yp,n)
   call rk4(x,h,y,yp,n)
@@ -40,7 +40,7 @@ DO x=xst,xmax,h
   
   call flush (10)
 
-ENDDO
+enddo
 
 end program SIR
 
