@@ -10,7 +10,6 @@ Nt  = 90
 Nx = 1000
 DIR='_output'
 file_num = np.linspace(tstart,tfinal,Nt,dtype='int')
-sum_energy_dum=np.zeros(Nt)
 sum_energy=np.zeros(Nt)
 sum_pressure2=np.zeros(Nt)
 for i in range(Nt):
@@ -18,7 +17,6 @@ for i in range(Nt):
     pressure,velocity = np.loadtxt(file_name, skiprows=6, usecols=(0,1), unpack=True)
     energy = velocity*velocity
     pressure2 = pressure*pressure
-    sum_energy_dum[i] = np.sum(energy)/Nx
     sum_energy[i] = np.log(np.sum(energy)/Nx)
     sum_pressure2[i] = np.sum(pressure2)/Nx
 
@@ -36,12 +34,14 @@ fo.write(slope+ "\n")
 #np.savetxt(fo,slope)
 fo.close()
 plt.figure(figsize=(6, 4))
-plt.plot(file_num[1:Nt],sum_energy_dum[1:Nt], label='Energy')
+plt.xlabel('Time(t)', fontsize=10)
+plt.ylabel('log($b_y^2$)', fontsize=10)
+plt.plot(file_num,sum_energy, label='Wave energy')
 #plt.plot(file_num,sum_pressure2, label='Pressure')
-#plt.plot(file_num, test_func(file_num, params[0], params[1]),
-#         label='Fitted function')
+plt.plot(file_num, test_func(file_num, params[0], params[1]),
+         label='Exponential fit')
 
-#plt.legend(loc='best')
+plt.legend(loc='best')
 
 plt.show()
 #plt.plot(file_num,sum_pressure2)
