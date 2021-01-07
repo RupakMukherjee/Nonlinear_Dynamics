@@ -1,6 +1,6 @@
 - This is a PyClaw input file to solve acoustics in 1D inhomogeneous medium.
 - The user need to run ONLY the file ''script.sh'' from terminal using a command ./script.sh
-- Make sure you have execute permission for the file script.sh
+- Make sure you have execute permission for the file ''script.sh''.
 - If you do not have the permission, you should change the permission by running this command within the local directory: chmod ugo+rwx script.sh
 - Once the run is completed (may take few weeks on a single machine - so recommend to run on a cluster - intelligent parallelization inbuilt), it will generate a file called "SlopePlot.vtr" which you can visualize using Paraview.
 - Also it will generate another file called "ParameterPlot.dat" which you can visualize via GNUplot or Python.
