@@ -34,7 +34,7 @@ do
     for kappa in {0..4}
     do
       sed -i -e "37s/.*/    k=${k[kappa]}/" alfven.py
-      for iter in {0..10}
+      for iter in {0..100}
       do
         python alfven.py && python energy.py
       done
