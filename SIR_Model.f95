@@ -23,9 +23,9 @@ real*8 x,y(n),yp(n),xst,xmax,h
 
 open(unit=10,file='Time_Evolution.dat',status='unknown')
 
-y(1) = 0.80d0 ! S
-y(2) = 0.05d0 ! I
-y(3) = 0.00d0 ! R
+y(1) = 0.80d0 ! S = Suspected
+y(2) = 0.05d0 ! I = Infected
+y(3) = 0.00d0 ! R = Recovered
 
 xst = 0.0d0
 xmax = 50.0d0
