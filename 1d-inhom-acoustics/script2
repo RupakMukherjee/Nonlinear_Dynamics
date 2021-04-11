@@ -1,0 +1,7 @@
+! gfortran -w -I/usr/local/include -L/usr/local/lib magnetosonic.f95 -lfftw3 -lm; ./a.out
+! python movie2.scr.py
+#load "movie2"
+se auto
+#f(x) = a+b*x
+#fit f(x) "Energy.dat" u 1:2 via a,b
+p "Energy.dat" u 1:2 w lp, "Energy.dat" u 1:3 w lp, "Energy.dat" u 1:4 w lp
