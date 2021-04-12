@@ -40,8 +40,8 @@ dt = 0.010d0
 
 f = 1.0d0
 
-Re = 1e5
-Rm = 1e5
+Re = 1e7
+Rm = 1e7
 
 rho0 = 1.0d0
 B0 = 1.0d0
@@ -51,10 +51,10 @@ do i = 1, Nx
   x(i) = dfloat(i-1) * dx
   do k = 1, Nz
     z(k) = dfloat(k-1) * dz
-    ux(i,k) = dcos(f*z(k))
-    uz(i,k) = dsin(f*x(i))
-    bx(i,k) = dsin(f*z(k))
-    bz(i,k) = dcos(f*x(i))
+    ux(i,k) = dsin(f*x(i))
+    uz(i,k) = dcos(f*z(k))
+    bx(i,k) = +dcos(f*x(i))*dsin(f*z(k))
+    bz(i,k) = -dsin(f*x(i))*dcos(f*z(k))
     write(15,*) 0.0d0, x(i),z(k),ux(i,k),uz(i,k),bx(i,k),bz(i,k)
   enddo
 enddo
@@ -232,10 +232,10 @@ call dfftw_destroy_plan_(planb)
 
 do i = 1, Nx
   do k = 1, Nz
-    dux_dz(i,k)   = dux_dz(i,k) / dfloat(Nx*Nz)
-    duz_dx(i,k)   = duz_dx(i,k) / dfloat(Nx*Nz)
-    dbx_dz(i,k)   = dbx_dz(i,k) / dfloat(Nx*Nz)
-    dbz_dx(i,k)   = dbz_dx(i,k) / dfloat(Nx*Nz)
+    dux_dz(i,k)   = dux_dz(i,k)   / dfloat(Nx*Nz)
+    duz_dx(i,k)   = duz_dx(i,k)   / dfloat(Nx*Nz)
+    dbx_dz(i,k)   = dbx_dz(i,k)   / dfloat(Nx*Nz)
+    dbz_dx(i,k)   = dbz_dx(i,k)   / dfloat(Nx*Nz)
     d2ux_dx2(i,k) = d2ux_dx2(i,k) / dfloat(Nx*Nz)
     d2ux_dz2(i,k) = d2ux_dz2(i,k) / dfloat(Nx*Nz)
     d2uz_dx2(i,k) = d2uz_dx2(i,k) / dfloat(Nx*Nz)
@@ -249,10 +249,10 @@ enddo
 
 DO i = 1, Nx
   do k = 1, Nz
-    dux_dt(i,k) = - B0 * dbx_dz(i,k) / rho0 + (d2ux_dx2(i,k) + d2ux_dz2(i,k)) / (rho0 * Re)
-    duz_dt(i,k) = + B0 * dbz_dx(i,k) / rho0 + (d2uz_dx2(i,k) + d2uz_dz2(i,k)) / (rho0 * Re)
-    ! dux_dt(i,k) = - B0 * (dbx_dz(i,k) - dbz_dx(i,k)) / rho0 + (d2ux_dx2(i,k) + d2ux_dz2(i,k)) / (rho0 * Re)
-    ! duz_dt(i,k) = (d2uz_dx2(i,k) + d2uz_dz2(i,k)) / (rho0 * Re)
+    ! dux_dt(i,k) = - B0 * dbx_dz(i,k) / rho0 + (d2ux_dx2(i,k) + d2ux_dz2(i,k)) / (rho0 * Re)
+    ! duz_dt(i,k) = + B0 * dbz_dx(i,k) / rho0 + (d2uz_dx2(i,k) + d2uz_dz2(i,k)) / (rho0 * Re)
+    dux_dt(i,k) = - B0 * (dbx_dz(i,k) - dbz_dx(i,k)) / rho0 + (d2ux_dx2(i,k) + d2ux_dz2(i,k)) / (rho0 * Re)
+    duz_dt(i,k) = + (d2uz_dx2(i,k) + d2uz_dz2(i,k)) / (rho0 * Re)
     dbx_dt(i,k) = - B0 * dux_dz(i,k) + (d2bx_dx2(i,k) + d2bx_dz2(i,k)) / Rm
     dbz_dt(i,k) = + B0 * duz_dx(i,k) + (d2bz_dx2(i,k) + d2bz_dz2(i,k)) / Rm
   enddo
