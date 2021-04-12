@@ -38,10 +38,10 @@ time_min = 0.00d0
 time_max = 10.00d0
 dt = 0.010d0
 
-f = 1.0d0
+f = 4.0d0
 
-Re = 1e7
-Rm = 1e7
+Re = 1e3
+Rm = 1e3
 
 rho0 = 1.0d0
 B0 = 1.0d0
