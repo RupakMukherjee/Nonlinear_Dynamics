@@ -58,12 +58,12 @@ do i = 1, Nx
     y(j) = dfloat(j-1) * dy
     do k = 1, Nz
       z(k) = dfloat(k-1) * dz
-      ux(i,j,k) = +dcos(f*x(i))*dsin(f*z(k))
-      uy(i,j,k) = 0.0d0
-      uz(i,j,k) = -dsin(f*x(i))*dcos(f*z(k))
-      bx(i,j,k) = +dcos(f*x(i))*dsin(f*z(k))
+      ux(i,j,k) = dsin(f*z(k)) + dcos(f*y(j))
+      uy(i,j,k) = dsin(f*x(i)) + dcos(f*z(k))
+      uz(i,j,k) = dsin(f*y(j)) + dcos(f*x(i))
+      bx(i,j,k) = 0.0d0
       by(i,j,k) = 0.0d0
-      bz(i,j,k) = -dsin(f*x(i))*dcos(f*z(k))
+      bz(i,j,k) = 0.0d0
       write(15,*) 0.0d0, x(i),y(j),z(k),ux(i,j,k),uy(i,j,k),uz(i,j,k),bx(i,j,k),by(i,j,k),bz(i,j,k)
     enddo
   enddo
@@ -133,10 +133,9 @@ REAL ( kind = 8 ) uz(Nx,Ny,Nz), uz_dum(Nx,Ny,Nz), duz_dt(Nx,Ny,Nz)
 REAL ( kind = 8 ) bx(Nx,Ny,Nz), bx_dum(Nx,Ny,Nz), dbx_dt(Nx,Ny,Nz)
 REAL ( kind = 8 ) by(Nx,Ny,Nz), by_dum(Nx,Ny,Nz), dby_dt(Nx,Ny,Nz)
 REAL ( kind = 8 ) bz(Nx,Ny,Nz), bz_dum(Nx,Ny,Nz), dbz_dt(Nx,Ny,Nz)
-REAL ( kind = 8 ) dux_dz(Nx,Ny,Nz), duy_dz(Nx,Ny,Nz), duz_dx(Nx,Ny,Nz)
-REAL ( kind = 8 ) dux_dx(Nx,Ny,Nz), duy_dy(Nx,Ny,Nz)
-REAL ( kind = 8 ) dbx_dz(Nx,Ny,Nz), dby_dz(Nx,Ny,Nz), dbz_dx(Nx,Ny,Nz)
-REAL ( kind = 8 ) dbx_dx(Nx,Ny,Nz), dby_dy(Nx,Ny,Nz), dbz_dz(Nx,Ny,Nz)
+REAL ( kind = 8 ) dux_dz(Nx,Ny,Nz), duy_dz(Nx,Ny,Nz), duz_dz(Nx,Ny,Nz)
+REAL ( kind = 8 ) dbx_dz(Nx,Ny,Nz), dby_dz(Nx,Ny,Nz)
+REAL ( kind = 8 ) dbz_dx(Nx,Ny,Nz), dbz_dy(Nx,Ny,Nz)
 REAL ( kind = 8 ) d2ux_dx2(Nx,Ny,Nz), d2ux_dy2(Nx,Ny,Nz), d2ux_dz2(Nx,Ny,Nz)
 REAL ( kind = 8 ) d2uy_dx2(Nx,Ny,Nz), d2uy_dy2(Nx,Ny,Nz), d2uy_dz2(Nx,Ny,Nz)
 REAL ( kind = 8 ) d2uz_dx2(Nx,Ny,Nz), d2uz_dy2(Nx,Ny,Nz), d2uz_dz2(Nx,Ny,Nz)
@@ -145,10 +144,9 @@ REAL ( kind = 8 ) d2by_dx2(Nx,Ny,Nz), d2by_dy2(Nx,Ny,Nz), d2by_dz2(Nx,Ny,Nz)
 REAL ( kind = 8 ) d2bz_dx2(Nx,Ny,Nz), d2bz_dy2(Nx,Ny,Nz), d2bz_dz2(Nx,Ny,Nz)
 COMPLEX ( kind = 8 ) uxk(Nh,Ny,Nz), uyk(Nh,Ny,Nz), uzk(Nh,Ny,Nz)
 COMPLEX ( kind = 8 ) bxk(Nh,Ny,Nz), byk(Nh,Ny,Nz), bzk(Nh,Ny,Nz)
-COMPLEX ( kind = 8 ) ikz_uxk(Nh,Ny,Nz), ikz_uyk(Nh,Ny,Nz), ikx_uzk(Nh,Ny,Nz)
-COMPLEX ( kind = 8 ) ikx_uxk(Nh,Ny,Nz), iky_uyk(Nh,Ny,Nz)
-COMPLEX ( kind = 8 ) ikz_bxk(Nh,Ny,Nz), ikz_byk(Nh,Ny,Nz), ikx_bzk(Nh,Ny,Nz)
-COMPLEX ( kind = 8 ) ikx_bxk(Nh,Ny,Nz), iky_byk(Nh,Ny,Nz), ikz_bzk(Nh,Ny,Nz)
+COMPLEX ( kind = 8 ) ikz_uxk(Nh,Ny,Nz), ikz_uyk(Nh,Ny,Nz), ikz_uzk(Nh,Ny,Nz)
+COMPLEX ( kind = 8 ) ikz_bxk(Nh,Ny,Nz), ikz_byk(Nh,Ny,Nz)
+COMPLEX ( kind = 8 ) ikx_bzk(Nh,Ny,Nz), iky_bzk(Nh,Ny,Nz)
 COMPLEX ( kind = 8 ) kx2_uxk(Nh,Ny,Nz), ky2_uxk(Nh,Ny,Nz), kz2_uxk(Nh,Ny,Nz)
 COMPLEX ( kind = 8 ) kx2_uyk(Nh,Ny,Nz), ky2_uyk(Nh,Ny,Nz), kz2_uyk(Nh,Ny,Nz)
 COMPLEX ( kind = 8 ) kx2_uzk(Nh,Ny,Nz), ky2_uzk(Nh,Ny,Nz), kz2_uzk(Nh,Ny,Nz)
@@ -197,21 +195,17 @@ call dfftw_destroy_plan_(planf)
 
 do i = 1, Nh
   kx = 2.0d0 * pi * dfloat(i-1) / Lx
-  do j = 1, Ny
+  do j = 1, Ny/2
     ky = 2.0d0 * pi * dfloat(j-1) / Ly
     do k = 1, Nz/2
       kz = 2.0d0 * pi * dfloat(k-1) / Lz
       ikz_uxk(i,j,k) = (0.0d0,1.0d0) * kz * uxk(i,j,k)
       ikz_uyk(i,j,k) = (0.0d0,1.0d0) * kz * uyk(i,j,k)
-      ikx_uzk(i,j,k) = (0.0d0,1.0d0) * kx * uzk(i,j,k)
-      ikx_uxk(i,j,k) = (0.0d0,1.0d0) * kx * uxk(i,j,k)
-      iky_uyk(i,j,k) = (0.0d0,1.0d0) * ky * uyk(i,j,k)
+      ikz_uzk(i,j,k) = (0.0d0,1.0d0) * kz * uzk(i,j,k)
       ikz_bxk(i,j,k) = (0.0d0,1.0d0) * kz * bxk(i,j,k)
       ikz_byk(i,j,k) = (0.0d0,1.0d0) * kz * byk(i,j,k)
       ikx_bzk(i,j,k) = (0.0d0,1.0d0) * kx * bzk(i,j,k)
-      ikx_bxk(i,j,k) = (0.0d0,1.0d0) * kx * bxk(i,j,k)
-      iky_byk(i,j,k) = (0.0d0,1.0d0) * ky * byk(i,j,k)
-      ikz_bzk(i,j,k) = (0.0d0,1.0d0) * kz * bzk(i,j,k)
+      iky_bzk(i,j,k) = (0.0d0,1.0d0) * ky * bzk(i,j,k)
       kx2_uxk(i,j,k) = - kx * kx * uxk(i,j,k)
       ky2_uxk(i,j,k) = - ky * ky * uxk(i,j,k)
       kz2_uxk(i,j,k) = - kz * kz * uxk(i,j,k)
@@ -235,15 +229,70 @@ do i = 1, Nh
       kz = 2.0d0 * pi * dfloat((k-1) - Nz) / Lz
       ikz_uxk(i,j,k) = (0.0d0,1.0d0) * kz * uxk(i,j,k)
       ikz_uyk(i,j,k) = (0.0d0,1.0d0) * kz * uyk(i,j,k)
-      ikx_uzk(i,j,k) = (0.0d0,1.0d0) * kx * uzk(i,j,k)
-      ikx_uxk(i,j,k) = (0.0d0,1.0d0) * kx * uxk(i,j,k)
-      iky_uyk(i,j,k) = (0.0d0,1.0d0) * ky * uyk(i,j,k)
+      ikz_uzk(i,j,k) = (0.0d0,1.0d0) * kz * uzk(i,j,k)
       ikz_bxk(i,j,k) = (0.0d0,1.0d0) * kz * bxk(i,j,k)
       ikz_byk(i,j,k) = (0.0d0,1.0d0) * kz * byk(i,j,k)
       ikx_bzk(i,j,k) = (0.0d0,1.0d0) * kx * bzk(i,j,k)
-      ikx_bxk(i,j,k) = (0.0d0,1.0d0) * kx * bxk(i,j,k)
-      iky_byk(i,j,k) = (0.0d0,1.0d0) * ky * byk(i,j,k)
-      ikz_bzk(i,j,k) = (0.0d0,1.0d0) * kz * bzk(i,j,k)
+      iky_bzk(i,j,k) = (0.0d0,1.0d0) * ky * bzk(i,j,k)
+      kx2_uxk(i,j,k) = - kx * kx * uxk(i,j,k)
+      ky2_uxk(i,j,k) = - ky * ky * uxk(i,j,k)
+      kz2_uxk(i,j,k) = - kz * kz * uxk(i,j,k)
+      kx2_uyk(i,j,k) = - kx * kx * uyk(i,j,k)
+      ky2_uyk(i,j,k) = - ky * ky * uyk(i,j,k)
+      kz2_uyk(i,j,k) = - kz * kz * uyk(i,j,k)
+      kx2_uzk(i,j,k) = - kx * kx * uzk(i,j,k)
+      ky2_uzk(i,j,k) = - ky * ky * uzk(i,j,k)
+      kz2_uzk(i,j,k) = - kz * kz * uzk(i,j,k)
+      kx2_bxk(i,j,k) = - kx * kx * bxk(i,j,k)
+      ky2_bxk(i,j,k) = - ky * ky * bxk(i,j,k)
+      kz2_bxk(i,j,k) = - kz * kz * bxk(i,j,k)
+      kx2_byk(i,j,k) = - kx * kx * byk(i,j,k)
+      ky2_byk(i,j,k) = - ky * ky * byk(i,j,k)
+      kz2_byk(i,j,k) = - kz * kz * byk(i,j,k)
+      kx2_bzk(i,j,k) = - kx * kx * bzk(i,j,k)
+      ky2_bzk(i,j,k) = - ky * ky * bzk(i,j,k)
+      kz2_bzk(i,j,k) = - kz * kz * bzk(i,j,k)
+    enddo
+  enddo
+  do j = Ny/2+1, Ny
+    ky = 2.0d0*pi*float((j-1)-Ny)/Ly
+    do k = 1, Nz/2
+      kz = 2.0d0*pi*float(k-1)/Lz
+      ikz_uxk(i,j,k) = (0.0d0,1.0d0) * kz * uxk(i,j,k)
+      ikz_uyk(i,j,k) = (0.0d0,1.0d0) * kz * uyk(i,j,k)
+      ikz_uzk(i,j,k) = (0.0d0,1.0d0) * kz * uzk(i,j,k)
+      ikz_bxk(i,j,k) = (0.0d0,1.0d0) * kz * bxk(i,j,k)
+      ikz_byk(i,j,k) = (0.0d0,1.0d0) * kz * byk(i,j,k)
+      ikx_bzk(i,j,k) = (0.0d0,1.0d0) * kx * bzk(i,j,k)
+      iky_bzk(i,j,k) = (0.0d0,1.0d0) * ky * bzk(i,j,k)
+      kx2_uxk(i,j,k) = - kx * kx * uxk(i,j,k)
+      ky2_uxk(i,j,k) = - ky * ky * uxk(i,j,k)
+      kz2_uxk(i,j,k) = - kz * kz * uxk(i,j,k)
+      kx2_uyk(i,j,k) = - kx * kx * uyk(i,j,k)
+      ky2_uyk(i,j,k) = - ky * ky * uyk(i,j,k)
+      kz2_uyk(i,j,k) = - kz * kz * uyk(i,j,k)
+      kx2_uzk(i,j,k) = - kx * kx * uzk(i,j,k)
+      ky2_uzk(i,j,k) = - ky * ky * uzk(i,j,k)
+      kz2_uzk(i,j,k) = - kz * kz * uzk(i,j,k)
+      kx2_bxk(i,j,k) = - kx * kx * bxk(i,j,k)
+      ky2_bxk(i,j,k) = - ky * ky * bxk(i,j,k)
+      kz2_bxk(i,j,k) = - kz * kz * bxk(i,j,k)
+      kx2_byk(i,j,k) = - kx * kx * byk(i,j,k)
+      ky2_byk(i,j,k) = - ky * ky * byk(i,j,k)
+      kz2_byk(i,j,k) = - kz * kz * byk(i,j,k)
+      kx2_bzk(i,j,k) = - kx * kx * bzk(i,j,k)
+      ky2_bzk(i,j,k) = - ky * ky * bzk(i,j,k)
+      kz2_bzk(i,j,k) = - kz * kz * bzk(i,j,k)
+    enddo
+    do k = Nz/2+1, Nz
+      kz = 2.0d0*pi*float((k-1)-Nz)/Lz
+      ikz_uxk(i,j,k) = (0.0d0,1.0d0) * kz * uxk(i,j,k)
+      ikz_uyk(i,j,k) = (0.0d0,1.0d0) * kz * uyk(i,j,k)
+      ikz_uzk(i,j,k) = (0.0d0,1.0d0) * kz * uzk(i,j,k)
+      ikz_bxk(i,j,k) = (0.0d0,1.0d0) * kz * bxk(i,j,k)
+      ikz_byk(i,j,k) = (0.0d0,1.0d0) * kz * byk(i,j,k)
+      ikx_bzk(i,j,k) = (0.0d0,1.0d0) * kx * bzk(i,j,k)
+      iky_bzk(i,j,k) = (0.0d0,1.0d0) * ky * bzk(i,j,k)
       kx2_uxk(i,j,k) = - kx * kx * uxk(i,j,k)
       ky2_uxk(i,j,k) = - ky * ky * uxk(i,j,k)
       kz2_uxk(i,j,k) = - kz * kz * uxk(i,j,k)
@@ -274,15 +323,7 @@ call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikz_uyk, duy_dz, FFTW_ESTIMATE)
 call dfftw_execute_(planb)
 call dfftw_destroy_plan_(planb)
 
-call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikx_uzk, duz_dx, FFTW_ESTIMATE)
-call dfftw_execute_(planb)
-call dfftw_destroy_plan_(planb)
-
-call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikx_uxk, dux_dx, FFTW_ESTIMATE)
-call dfftw_execute_(planb)
-call dfftw_destroy_plan_(planb)
-
-call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, iky_uyk, duy_dy, FFTW_ESTIMATE)
+call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikz_uzk, duz_dz, FFTW_ESTIMATE)
 call dfftw_execute_(planb)
 call dfftw_destroy_plan_(planb)
 
@@ -298,15 +339,7 @@ call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikx_bzk, dbz_dx, FFTW_ESTIMATE)
 call dfftw_execute_(planb)
 call dfftw_destroy_plan_(planb)
 
-call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikx_bxk, dbx_dx, FFTW_ESTIMATE)
-call dfftw_execute_(planb)
-call dfftw_destroy_plan_(planb)
-
-call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, iky_byk, dby_dy, FFTW_ESTIMATE)
-call dfftw_execute_(planb)
-call dfftw_destroy_plan_(planb)
-
-call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, ikz_bzk, dbz_dz, FFTW_ESTIMATE)
+call dfftw_plan_dft_c2r_3d_(planb, Nx, Ny, Nz, iky_bzk, dbz_dy, FFTW_ESTIMATE)
 call dfftw_execute_(planb)
 call dfftw_destroy_plan_(planb)
 
@@ -387,15 +420,11 @@ do i = 1, Nx
     do k = 1, Nz
       dux_dz(i,j,k)   = dux_dz(i,j,k)   / dfloat(Nx*Ny*Nz)
       duy_dz(i,j,k)   = duy_dz(i,j,k)   / dfloat(Nx*Ny*Nz)
-      duz_dx(i,j,k)   = duz_dx(i,j,k)   / dfloat(Nx*Ny*Nz)
-      dux_dx(i,j,k)   = dux_dx(i,j,k)   / dfloat(Nx*Ny*Nz)
-      duy_dy(i,j,k)   = duy_dy(i,j,k)   / dfloat(Nx*Ny*Nz)
+      duz_dz(i,j,k)   = duz_dz(i,j,k)   / dfloat(Nx*Ny*Nz)
       dbx_dz(i,j,k)   = dbx_dz(i,j,k)   / dfloat(Nx*Ny*Nz)
       dby_dz(i,j,k)   = dby_dz(i,j,k)   / dfloat(Nx*Ny*Nz)
       dbz_dx(i,j,k)   = dbz_dx(i,j,k)   / dfloat(Nx*Ny*Nz)
-      dbx_dx(i,j,k)   = dbx_dx(i,j,k)   / dfloat(Nx*Ny*Nz)
-      dby_dy(i,j,k)   = dby_dy(i,j,k)   / dfloat(Nx*Ny*Nz)
-      dbz_dz(i,j,k)   = dbz_dz(i,j,k)   / dfloat(Nx*Ny*Nz)
+      dbz_dy(i,j,k)   = dbz_dy(i,j,k)   / dfloat(Nx*Ny*Nz)
       d2ux_dx2(i,j,k) = d2ux_dx2(i,j,k) / dfloat(Nx*Ny*Nz)
       d2ux_dy2(i,j,k) = d2ux_dy2(i,j,k) / dfloat(Nx*Ny*Nz)
       d2ux_dz2(i,j,k) = d2ux_dz2(i,j,k) / dfloat(Nx*Ny*Nz)
@@ -427,12 +456,12 @@ do i = 1, Nx
       bxRm = (d2bx_dx2(i,j,k) + d2bx_dy2(i,j,k) + d2bx_dz2(i,j,k)) / Rm
       byRm = (d2by_dx2(i,j,k) + d2by_dy2(i,j,k) + d2by_dz2(i,j,k)) / Rm
       bzRm = (d2bz_dx2(i,j,k) + d2bz_dy2(i,j,k) + d2bz_dz2(i,j,k)) / Rm
-      dux_dt(i,j,k) = uxRe - B0 * dbx_dz(i,j,k) / rho0
-      duy_dt(i,j,k) = uyRe - B0 * dby_dz(i,j,k) / rho0
-      duz_dt(i,j,k) = uzRe - B0 * (dbx_dx(i,j,k) + dby_dy(i,j,k) + 2.0d0 * dbz_dz(i,j,k)) / rho0
+      dux_dt(i,j,k) = uxRe + B0 * (dbz_dx(i,j,k) - dbx_dz(i,j,k)) / rho0
+      duy_dt(i,j,k) = uyRe + B0 * (dbz_dy(i,j,k) - dby_dz(i,j,k)) / rho0
+      duz_dt(i,j,k) = uzRe
       dbx_dt(i,j,k) = bxRm - B0 * dux_dz(i,j,k)
       dby_dt(i,j,k) = byRm - B0 * duy_dz(i,j,k)
-      dbz_dt(i,j,k) = bzRm + B0 * (dux_dx(i,j,k) + duy_dy(i,j,k))
+      dbz_dt(i,j,k) = bzRm - B0 * duz_dz(i,j,k)
     enddo
   enddo
 enddo
