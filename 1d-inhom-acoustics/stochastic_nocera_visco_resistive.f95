@@ -40,7 +40,7 @@ L = 10.0d0*pi
 dx = L/dfloat(N)
 
 time_min = 0.00d0
-time_max = 20.0d0
+time_max = 100.0d0
 dt = 0.010d0
 
 M = nint(time_max/dt) - int(time_min/dt) + 1
@@ -49,7 +49,7 @@ allocate(abs_freq_k(M/2+1))
 allocate(freq_k(M/2+1))
 allocate(sort(M/2+1))
 
-k = 7.0d0
+k = 4.0d0
 
 Re = 1e4
 Rm = 1e4
@@ -57,9 +57,9 @@ Rm = 1e4
 rho0 = 1.0d0
 B0 = 1.0d0
 
-delta = 0.0d0
+delta = 1.0d0
 
-sigma = 0.30d0
+sigma = 1.0d0
 
 mu = 0.0d0
 
@@ -119,15 +119,15 @@ t = nint(time/dt) - int(time_min/dt)
 CALL derive(N, Nh, pi, time, GRn, u, b, du_dt, db_dt)
 CALL rk4(N, Nh, pi, time, u, b, du_dt, db_dt)
 
-DO i = 1, N
-  uSum = uSum + u(i) / dfloat(N)
-  bSum = bSum + b(i) / dfloat(N)
-ENDDO
-
-DO i = 1, N
-  u(i) = u(i) - uSum
-  b(i) = b(i) - bSum
-ENDDO
+! DO i = 1, N
+!   uSum = uSum + u(i) / dfloat(N)
+!   bSum = bSum + b(i) / dfloat(N)
+! ENDDO
+!
+! DO i = 1, N
+!   u(i) = u(i) - uSum
+!   b(i) = b(i) - bSum
+! ENDDO
 
 !PRINT*, "Printing Data"
 
