@@ -1,6 +1,7 @@
 Program spiral
 ! Complex Ginzburg-Landau Equation (Pseudo-Spectral Solution)
 ! https://www.youtube.com/watch?v=DeGvax-jalc&t=16s
+! Chimera States in Continuous Media: Existence and Distinctness (Phys. Rev. Lett. 119, 244101, 2017) [https://arxiv.org/abs/1712.00458]
 use omp_lib
 implicit none
 
