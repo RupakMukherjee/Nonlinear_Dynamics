@@ -10,20 +10,33 @@ def step_Euler_radial(solver,state,dt):
     xmax    = 10*np.pi
     h = (xmax-xmin)/Nx
 
-    nu = 1e-6
+    nu = 5e-4
+
+    dt2 = dt/2.
 
     q = state.q
 
-    qstar = np.empty(q.shape)
+    resistivity = np.empty(q.shape)
 
     for i in range(1,Nx-2):
-        qstar[0,i] = (q[0,i+1] - 2*q[0,i] + q[0,i-1])/(h*h)
+        resistivity[1,i] = (q[1,i+1] - 2*q[1,i] + q[1,i-1])/(h*h)
 
-    qstar[0,0]  = (q[0,1] - 2*q[0,0] + q[0,Nx-1])/(h*h)
-    qstar[0,Nx-1] = (q[0,0] - 2*q[0,Nx-1] + q[0,Nx-2])/(h*h)
+    resistivity[1,0]  = (q[1,1] - 2*q[1,0] + q[1,Nx-1])/(h*h)
+    resistivity[1,Nx-1] = (q[1,0] - 2*q[1,Nx-1] + q[1,Nx-2])/(h*h)
 
-    q[0,:] = q[0,:] + nu * qstar[0,:]
-    q[1,:] = q[1,:]
+    qstar = np.empty(q.shape)
+
+    qstar[0,:] = q[0,:]
+    qstar[1,:] = q[1,:] + dt2 * nu * resistivity[1,:]
+
+    for i in range(1,Nx-2):
+        resistivity[1,i] = (qstar[1,i+1] - 2*qstar[1,i] + qstar[1,i-1])/(h*h)
+
+    resistivity[1,0]  = (qstar[1,1] - 2*qstar[1,0] + qstar[1,Nx-1])/(h*h)
+    resistivity[1,Nx-1] = (qstar[1,0] - 2*qstar[1,Nx-1] + qstar[1,Nx-2])/(h*h)
+
+    q[0,:] = q[0,:]
+    q[1,:] = q[1,:] + dt * nu * resistivity[1,:]
 
 def acoustics(problem='Brahmananda'):
     """
@@ -51,10 +64,10 @@ def acoustics(problem='Brahmananda'):
     xmin    = 0
     xmax    = 10*math.pi
 
-    sigma=0.3
+    sigma=0.5
     mu=0.0
-    epsilon=0.03
-    k=6
+    epsilon=0.01
+    k=1
 
     x = pyclaw.Dimension(xmin,xmax,Nx,name='x')
     domain = pyclaw.Domain(x)
