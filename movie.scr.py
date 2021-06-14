@@ -7,6 +7,10 @@ ofl = open('movie', 'w')
 
 ofl.write('''#### gnu.wave ####
 
+se xr[-30:30]
+se yr[-30:30]
+se zr[0:50]
+
 #set terminal pngcairo size 1500,1500 enhanced font 'Verdana,9'\n\n''')
 
 for i in range(t0, t1 + 1, dt):

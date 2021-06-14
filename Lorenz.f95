@@ -18,13 +18,16 @@ integer*8 i,j,time_max,time_start,time_write,timestep,t,h,th,P,pIndex
 
 common/comm/xi,rho,beta,sigma,r,P
 
+integer,parameter :: seed = 99999999
+CALL srand(seed)
+
 !================ File Names ==========================================
 
 open(unit=10,file='Initial_Condition.dat',status='unknown')
 
 !================ INITIAL CONDITION ===================================
 
- time_max   = 100
+ time_max   = 50
  time_write = 0
  timestep   = 1000
  time       = 0.0d0
@@ -40,9 +43,9 @@ open(unit=10,file='Initial_Condition.dat',status='unknown')
  P     = int(r*N)
 
 do i = 1, N, 3
-  w(i)   = 1.0d0 * dcos(2.0d0*pi*dfloat(i)/dfloat(N))
-  w(i+1) = 1.0d0 * dsin(2.0d0*pi*dfloat(i)/dfloat(N))
-  w(i+2) = 1.0d0 * dsin(2.0d0*pi*dfloat(i)/dfloat(N))
+  w(i)   = 1.0d0 * dcos(2.0d0*pi*dfloat(i)/dfloat(N) + 4.0d0*pi*(rand()-0.5))
+  w(i+1) = 1.0d0 * dsin(2.0d0*pi*dfloat(i)/dfloat(N) + 4.0d0*pi*(rand()-0.5))
+  w(i+2) = 1.0d0 * dsin(2.0d0*pi*dfloat(i)/dfloat(N) + 4.0d0*pi*(rand()-0.5))
   write(10,*) i,w(i),w(i+1),w(i+2)
 enddo
 
