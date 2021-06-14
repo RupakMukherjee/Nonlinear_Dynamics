@@ -14,8 +14,7 @@ real ( kind = 8 ), parameter :: pi=3.14159265358979323846d0
 
 real*8 time,dt,xi,rho,beta,sigma,r
 real*8 w(N),wp(N)
-integer*8 i,j,time_max,time_start,time_write,timestep,t,h,th,P
-integer*8 o0Index,o1Index,o2Index,p0Index,p1Index,p2Index
+integer*8 i,j,time_max,time_start,time_write,timestep,t,h,th,P,pIndex
 
 common/comm/xi,rho,beta,sigma,r,P
 
@@ -25,15 +24,11 @@ open(unit=10,file='Initial_Condition.dat',status='unknown')
 
 !================ INITIAL CONDITION ===================================
 
- time_max   = 200
+ time_max   = 100
  time_write = 0
  timestep   = 1000
  time       = 0.0d0
  dt         = 0.001d0
-
- o0Index = 3 !<Particle
- o1Index = 125 !<Particle
- o2Index = 290 !<Particle
 
  xi    = 10.0d0
  rho   = 28.0d0
@@ -63,25 +58,12 @@ do t = 1, time_max, 1
     call derive(N,Particle,time,w,wp)
     call RK4(N,Particle,time,dt,w,wp)
 
-    ! if (t .ge. time_write .and. mod(t,1) == 0 .and. t .le. time_max) then
-    !   do i=1,N,3
-    !     write(th,*) time,(i-1)/3,w(i),w(i+1),w(i+2)
-    !   enddo ! i
-    ! endif
-    !
-    ! if (t .ge. time_write .and. mod(t,1) == 0 .and. t .le. time_max) then
-    !   close (th)
-    ! endif
-
-    p0Index = 3*(o0Index-1) + 1
-    p1Index = 3*(o1Index-1) + 1
-    p2Index = 3*(o2Index-1) + 1
-
-    if (t .ge. time_write .and. mod(t,1) == 0 .and. t .le. time_max) then
-      write(10,*) time, w(p0Index), w(p0Index+1), w(p0Index+2)
-      write(20,*) time, w(p1Index), w(p1Index+1), w(p1Index+2)
-      write(30,*) time, w(p2Index), w(p2Index+1), w(p2Index+2)
-    endif
+    do i = 1, N, 3
+      pIndex = (i-1)/3 + 1
+      if (t .ge. time_write .and. mod(t,1) == 0 .and. i .le. 850) then ! Choose the i-limit depending on the stack limit of your machine.
+        write(pIndex+100,*) time, pIndex, w(i), w(i+1), w(i+2)
+      endif
+    enddo
 
   enddo !h
 enddo !t
