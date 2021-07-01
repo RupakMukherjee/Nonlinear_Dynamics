@@ -4,7 +4,7 @@
 ! Chaos 28, 063119 (2018); https://doi.org/10.1063/1.5020009
 ! Important reference: Coherent traveling waves in nonlocally coupled chaotic systems,
 ! Volodymyr Dziubak,Yuri Maistrenko, and Eckehard Scholl
-! PRE, 87, 032907 (2013)
+! PRE, 87, 032907 (2013); https://doi.org/10.1103/PhysRevE.87.032907
 implicit none
 
 integer ( kind = 4 ), parameter :: Particle = 300
